@@ -1,0 +1,69 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Product Catalog</h1>
+    <p class="subtitle">Browse our amazing collection of products</p>
+  </div>
+
+  <div class="search-section">
+    <div class="search-bar">
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery" 
+        (input)="onSearch()"
+        placeholder="Search products..."
+        class="search-input"
+      />
+      <button class="search-btn" (click)="onSearch()">🔍 Search</button>
+    </div>
+
+    <div class="filter-bar">
+      <select [(ngModel)]="selectedCategory" (change)="onCategoryChange()" class="category-select">
+        <option value="">All Categories</option>
+        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+      </select>
+      <button class="clear-btn" (click)="clearFilters()" *ngIf="searchQuery || selectedCategory">
+        Clear Filters
+      </button>
+    </div>
+  </div>
+
+  <div class="products-count">
+    Showing {{ filteredProducts.length }} product(s)
+  </div>
+
+  <div class="products-grid" *ngIf="filteredProducts.length > 0">
+    <div class="product-card" *ngFor="let product of filteredProducts">
+      <div class="product-image" (click)="viewProduct(product.id)">
+        <img [src]="product.imageUrl" [alt]="product.name" />
+      </div>
+      <div class="product-info">
+        <h3 class="product-name" (click)="viewProduct(product.id)">{{ product.name }}</h3>
+        <p class="product-category">{{ product.category }}</p>
+        <p class="product-description">{{ product.description.substring(0, 80) }}...</p>
+        
+        <div class="product-rating">
+          <span class="stars">⭐ {{ product.rating }}</span>
+          <span class="reviews">({{ product.reviews }} reviews)</span>
+        </div>
+
+        <div class="product-footer">
+          <div class="product-price">₹{{ product.price.toFixed(2) }}</div>
+          <div class="product-actions">
+            <button class="view-btn" (click)="viewProduct(product.id)">View Details</button>
+            <button class="cart-btn" (click)="addToCart(product)" [disabled]="product.stock === 0">
+              {{ product.stock > 0 ? 'Add to Cart' : 'Out of Stock' }}
+            </button>
+            <button class="buy-now-btn" (click)="buyNow(product)" [disabled]="product.stock === 0">
+              Buy Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-products" *ngIf="filteredProducts.length === 0">
+    <p>No products found matching your criteria</p>
+    <button class="clear-btn" (click)="clearFilters()">Clear Filters</button>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="product-detail-container" *ngIf="product">
+  <button class="back-btn" (click)="goBack()">← Back to Products</button>
+
+  <div class="product-detail-card">
+    <div class="product-image-section">
+      <img [src]="product.imageUrl" [alt]="product.name" class="product-image" />
+    </div>
+
+    <div class="product-info-section">
+      <span class="product-category">{{ product.category }}</span>
+      <h1 class="product-title">{{ product.name }}</h1>
+      
+      <div class="product-rating">
+        <span class="stars">⭐ {{ product.rating }}</span>
+        <span class="reviews">({{ product.reviews }} reviews)</span>
+      </div>
+
+      <p class="product-description">{{ product.description }}</p>
+
+      <div class="product-price-section">
+        <div class="price">₹{{ product.price.toFixed(2) }}</div>
+      </div>
+
+      <div class="quantity-section" *ngIf="product.stock > 0">
+        <label>Quantity:</label>
+        <div class="quantity-controls">
+          <button (click)="decreaseQuantity()" [disabled]="quantity <= 1">-</button>
+          <input type="number" [(ngModel)]="quantity" [max]="product.stock" [min]="1" readonly />
+          <button (click)="increaseQuantity()" [disabled]="quantity >= product.stock">+</button>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="add-to-cart-btn" (click)="addToCart()" [disabled]="product.stock === 0">
+          {{ product.stock > 0 ? 'Add to Cart' : 'Out of Stock' }}
+        </button>
+        <button class="buy-now-btn" (click)="buyNow()" [disabled]="product.stock === 0">
+          Buy Now
+        </button>
+        <button class="continue-shopping-btn" (click)="goBack()">
+          Continue Shopping
+        </button>
+      </div>
+
+      <div class="product-features">
+        <h3>Product Features:</h3>
+        <ul>
+          <li>High quality materials</li>
+          <li>Fast and free shipping</li>
+          <li>30-day money-back guarantee</li>
+          <li>Customer support available 24/7</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
